@@ -5,6 +5,7 @@ import { homedir } from 'os';
 const DEFAULT_CONFIG = {
   tagFormat: 'v_{datetime}_{suffix}',
   datetimeFormat: 'yyyyMMddHHmm',
+  suffixes: ['test', 'main'],
 };
 
 const CONFIG_FILENAME = '.dotagrc';

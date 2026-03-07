@@ -29,8 +29,8 @@ program
           type: 'list',
           name: 'suffix',
           message: 'Select tag suffix:',
-          choices: ['test', 'main'],
-          default: 'test',
+          choices: config.suffixes,
+          default: config.suffixes[0],
         },
         {
           type: 'confirm',
