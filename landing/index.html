@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>git-timetag - Git 标签管理工具</title>
+  <meta name="description" content="一个强大的 CLI 工具，用于创建和推送标准化格式的 Git 标签">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html { font-family: 'Inter', sans-serif; }
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .code-block {
+      background: #1e1e2e;
+      border-radius: 8px;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      transition: transform 0.2s ease;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <!-- Navigation -->
+  <nav class="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="text-xl font-bold text-gray-900">git-timetag</a>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="#features" class="text-gray-600 hover:text-gray-900">功能</a>
+        <a href="#usage" class="text-gray-600 hover:text-gray-900">使用</a>
+        <a href="#config" class="text-gray-600 hover:text-gray-900">配置</a>
+        <a href="https://github.com/huangxingx/git-timetag" class="text-gray-600 hover:text-gray-900">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="gradient-bg text-white pt-32 pb-20">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        Git 标签，从未如此简单
+      </h1>
+      <p class="text-xl md:text-2xl text-white/80 mb-8">
+        标准化的版本标签管理工具，让项目版本控制更加规范高效
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <code class="code-block px-6 py-4 text-lg font-mono text-green-400">
+          npm install -g git-timetag
+        </code>
+        <button onclick="copyCommand()" class="px-6 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
+          复制命令
+        </button>
+      </div>
+      <p id="copy-feedback" class="mt-3 text-sm text-white/60 opacity-0 transition-opacity"></p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">核心功能</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">标准化格式</h3>
+          <p class="text-gray-600 text-sm">自动生成如 <code>v_202403211200_test</code> 的标准化标签</p>
+        </div>
+        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">交互式体验</h3>
+          <p class="text-gray-600 text-sm">友好的命令行交互，引导式完成标签创建</p>
+        </div>
+        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">标签注释</h3>
+          <p class="text-gray-600 text-sm">支持为标签添加注释/说明信息（Annotated Tags）</p>
+        </div>
+        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">高度可配置</h3>
+          <p class="text-gray-600 text-sm">自定义标签格式、日期格式和可用后缀</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Usage Section -->
+  <section id="usage" class="py-20 bg-gray-100">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">快速开始</h2>
+      <div class="space-y-8">
+        <div class="flex items-start gap-4">
+          <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">1</div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">安装</h3>
+            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>git clone &lt;repository-url&gt;
+cd git-tool
+npm install
+npm link</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">2</div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">运行</h3>
+            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>git-timetag</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">3</div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">交互流程</h3>
+            <ul class="text-gray-600 space-y-2">
+              <li>• 选择标签后缀（如 <code>test</code> 或 <code>main</code>）</li>
+              <li>• 输入标签注释/说明（可选）</li>
+              <li>• 确认是否推送到远程仓库</li>
+              <li>• 预览标签名称并最终确认</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Config Section -->
+  <section id="config" class="py-20">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">配置选项</h2>
+      <p class="text-center text-gray-600 mb-12">创建 <code>.gitimetagrc</code> 文件（项目根目录或用户主目录）</p>
+      <pre class="code-block p-6 text-gray-300 font-mono text-sm overflow-x-auto"><code>{
+  "tagFormat": "v_{datetime}_{suffix}",
+  "datetimeFormat": "yyyyMMddHHmm",
+  "suffixes": ["alpha", "beta", "stable"]
+}</code></pre>
+      <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left font-semibold text-gray-900">选项</th>
+              <th class="px-6 py-3 text-left font-semibold text-gray-900">描述</th>
+              <th class="px-6 py-3 text-left font-semibold text-gray-900">默认值</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr>
+              <td class="px-6 py-4 font-mono text-purple-600">tagFormat</td>
+              <td class="px-6 py-4 text-gray-600">标签模板</td>
+              <td class="px-6 py-4 text-gray-600">v_{datetime}_{suffix}</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-mono text-purple-600">datetimeFormat</td>
+              <td class="px-6 py-4 text-gray-600">日期格式（date-fns）</td>
+              <td class="px-6 py-4 text-gray-600">yyyyMMddHHmm</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-mono text-purple-600">suffixes</td>
+              <td class="px-6 py-4 text-gray-600">后缀选项数组</td>
+              <td class="px-6 py-4 text-gray-600">["test", "main"]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="gradient-bg text-white py-20">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">准备好开始了吗？</h2>
+      <p class="text-xl text-white/80 mb-8">立即体验标准化的 Git 标签管理</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://github.com/huangxingx/git-timetag" class="px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
+          在 GitHub 上查看
+        </a>
+        <code class="code-block px-6 py-4 text-lg font-mono text-green-400">git-timetag</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-8">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+      <p>&copy; 2026 git-timetag. MIT License.</p>
+      <div class="flex items-center space-x-6 mt-4 md:mt-0">
+        <a href="https://github.com/huangxingx/git-timetag" class="hover:text-white transition">GitHub</a>
+        <a href="#" class="hover:text-white transition">文档</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copyCommand() {
+      navigator.clipboard.writeText('npm install -g git-timetag');
+      const feedback = document.getElementById('copy-feedback');
+      feedback.textContent = '已复制到剪贴板 ✓';
+      feedback.style.opacity = '1';
+      setTimeout(() => {
+        feedback.style.opacity = '0';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

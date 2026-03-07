@@ -1,14 +1,14 @@
 {
-  "name": "dotag",
+  "name": "git-timetag",
   "version": "1.0.0",
   "description": "A CLI tool to create and push git tags with a standardized format.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "dotag": "./src/index.js"
+    "git-timetag": "./src/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [
     "git",
@@ -22,5 +22,8 @@
     "date-fns": "^3.6.0",
     "inquirer": "^9.2.16",
     "simple-git": "^3.22.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }

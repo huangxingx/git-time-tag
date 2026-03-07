@@ -9,10 +9,11 @@ import * as git from './git.js';
 const program = new Command();
 
 program
-  .name('dotag')
-  .description('Git tag CLI tool')
+  .name('git-timetag')
+  .description('Git tag CLI tool with timestamp-based tagging')
   .version('1.0.0')
-  .action(async () => {
+  .option('-m, --message <msg>', 'Add a message/comment to the tag (creates annotated tag)')
+  .action(async (options) => {
     try {
       if (!(await git.isRepo())) {
         console.error('Error: Not a git repository.');
@@ -33,6 +34,13 @@ program
           default: config.suffixes[0],
         },
         {
+          type: 'input',
+          name: 'message',
+          message: 'Enter tag message/comment (optional):',
+          default: options.message || '',
+          when: !options.message,
+        },
+        {
           type: 'confirm',
           name: 'push',
           message: 'Push to remote?',
@@ -42,18 +50,23 @@ program
 
       const now = new Date();
       const datetimeStr = format(now, config.datetimeFormat);
-      
+
       let tagName = config.tagFormat
         .replace('{datetime}', datetimeStr)
         .replace('{suffix}', answers.suffix);
 
+      const tagMessage = options.message || answers.message;
+
       console.log(`\nGenerated tag: ${tagName}`);
+      if (tagMessage) {
+        console.log(`Tag message: ${tagMessage}`);
+      }
 
       const confirmTag = await inquirer.prompt([
         {
           type: 'confirm',
           name: 'ok',
-          message: `Create tag "${tagName}"?`,
+          message: `Create tag "${tagName}"${tagMessage ? ` with message "${tagMessage}"` : ''}?`,
           default: true,
         },
       ]);
@@ -63,8 +76,8 @@ program
         return;
       }
 
-      await git.createTag(tagName);
-      console.log(`Tag "${tagName}" created.`);
+      await git.createTag(tagName, tagMessage);
+      console.log(`Tag "${tagName}" created${tagMessage ? ' (annotated)' : ''}.`);
 
       if (answers.push) {
         console.log('Pushing to remote...');
@@ -72,7 +85,15 @@ program
         console.log('Pushed successfully.');
       }
     } catch (error) {
-      console.error(`\nError: ${error.message}`);
+      if (error.message?.includes('Validation')) {
+        console.error(`\nError: ${error.message}`);
+      } else if (error.message?.includes('already exists')) {
+        console.error(`\nError: ${error.message}`);
+      } else if (error.message?.includes('Authentication')) {
+        console.error(`\nError: ${error.message}`);
+      } else {
+        console.error(`\nError: ${error.message}`);
+      }
       process.exit(1);
     }
   });
