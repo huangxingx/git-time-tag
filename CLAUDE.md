@@ -5,11 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm install        # Install dependencies
-npm link           # Link globally to use `git-timetag` command
-git-timetag        # Run the CLI tool
-git-timetag -m "message"  # Create tag with message
-npm test           # Run tests with Vitest
+npm install              # Install dependencies
+npm link                 # Link globally to use `gtt` command
+gtt                      # Run the CLI tool
+gtt -m "message"         # Create tag with message
+npm test                 # Run all tests with Vitest
+npm test -- test/config.test.js   # Run specific test file
 ```
 
 ## Architecture
@@ -29,6 +30,8 @@ npm test           # Run tests with Vitest
 - `tagFormat` - Tag template with `{datetime}` and `{suffix}` placeholders
 - `datetimeFormat` - date-fns format string
 - `suffixes` - Array of suffix options for interactive prompt
+
+**Module format**: ES modules (`"type": "module"` in package.json) - uses `import`/`export` syntax
 
 ## Workflow
 

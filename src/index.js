@@ -9,7 +9,7 @@ import * as git from './git.js';
 const program = new Command();
 
 program
-  .name('git-timetag')
+  .name('gtt')
   .description('Git tag CLI tool with timestamp-based tagging')
   .version('1.0.0')
   .option('-m, --message <msg>', 'Add a message/comment to the tag (creates annotated tag)')

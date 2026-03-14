@@ -1,11 +1,11 @@
 {
-  "name": "git-timetag",
+  "name": "gtt",
   "version": "1.0.0",
   "description": "A CLI tool to create and push git tags with a standardized format.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "git-timetag": "./src/index.js"
+    "gtt": "./src/index.js"
   },
   "scripts": {
     "test": "vitest run"

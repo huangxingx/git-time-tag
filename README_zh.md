@@ -1,4 +1,4 @@
-# dotag CLI
+# gtt CLI
 
 一个强大且灵活的命令行工具，用于创建和推送具有标准化格式的 Git 标签（Tags）。确保您的项目版本管理保持一致且自动化。
 
@@ -18,8 +18,8 @@
 
 1. **克隆仓库**：
    ```bash
-   git clone <repository-url>
-   cd git-tool
+   git clone git@github.com:huangxingx/git-time-tag.git
+   cd git-time-tag
    ```
 
 2. **安装依赖**：
@@ -31,14 +31,14 @@
    ```bash
    npm link
    ```
-   安装后，您可以在任何目录下运行 `dotag` 命令。
+   安装后，您可以在任何目录下运行 `gtt` 命令。
 
 ## 📖 使用方法
 
 在任何 Git 仓库中运行以下命令：
 
 ```bash
-dotag
+gtt
 ```
 
 ### 交互步骤
@@ -49,15 +49,15 @@ dotag
 
 ## 🛠️ 配置说明
 
-您可以通过在 **用户主目录**（全局）或 **项目根目录**（局部）下创建 `.dotagrc` 文件来自定义 `dotag`。局部设置会覆盖全局设置。
+您可以通过在 **用户主目录**（全局）或 **项目根目录**（局部）下创建 `.gitimetagrc` 文件来自定义 `gtt`。局部设置会覆盖全局设置。
 
 ### 配置文件路径
 
-- **Windows**: `C:\Users\<您的用户名>\.dotagrc`
-- **macOS/Linux**: `~/.dotagrc`
-- **项目目录**: `<项目根目录>/.dotagrc`
+- **Windows**: `C:\Users\<您的用户名>\.gitimetagrc`
+- **macOS/Linux**: `~/.gitimetagrc`
+- **项目目录**: `<项目根目录>/.gitimetagrc`
 
-### `.dotagrc` 示例
+### `.gitimetagrc` 示例
 
 ```json
 {
@@ -75,7 +75,7 @@ dotag
 
 ## ❓ 常见问题排查
 
-- **"Not a git repository"**：请确保您是在已初始化 Git 的目录中运行 `dotag`。
+- **"Not a git repository"**：请确保您是在已初始化 Git 的目录中运行 `gtt`。
 - **"Tag already exists"**：如果您尝试创建已存在的标签，Git 会报错。请使用 `git tag` 查看当前已有的标签。
 - **"Permission denied" (npm link)**：在 macOS/Linux 上，您可能需要使用 `sudo npm link`。在 Windows 上，请以管理员身份运行终端。
 

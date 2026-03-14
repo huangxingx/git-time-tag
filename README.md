@@ -1,4 +1,4 @@
-# git-timetag CLI
+# gtt CLI
 
 A powerful and flexible CLI tool to create and push Git tags with a standardized format. Ensure your project versioning is consistent and automated.
 
@@ -19,8 +19,8 @@ A powerful and flexible CLI tool to create and push Git tags with a standardized
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd git-tool
+   git clone git@github.com:huangxingx/git-time-tag.git
+   cd git-time-tag
    ```
 
 2. **Install dependencies**:
@@ -32,14 +32,14 @@ A powerful and flexible CLI tool to create and push Git tags with a standardized
    ```bash
    npm link
    ```
-   Now you can run `git-timetag` from any directory.
+   Now you can run `gtt` from any directory.
 
 ## 📖 Usage
 
 Run the command in any Git repository:
 
 ```bash
-git-timetag
+gtt
 ```
 
 ### Interactive Steps
@@ -52,13 +52,13 @@ git-timetag
 ### Command Line Options
 
 ```bash
-git-timetag -m "Release version 1.0.0"    # Create tag with message
-git-timetag --message "Hotfix deploy"     # Create tag with message
+gtt -m "Release version 1.0.0"    # Create tag with message
+gtt --message "Hotfix deploy"     # Create tag with message
 ```
 
 ## 🛠️ Configuration
 
-You can customize `git-timetag` by creating a `.gitimetagrc` file in your **home directory** (global) or **project root** (local). Local settings override global ones.
+You can customize `gtt` by creating a `.gitimetagrc` file in your **home directory** (global) or **project root** (local). Local settings override global ones.
 
 ### Configuration File Locations
 
@@ -84,7 +84,7 @@ You can customize `git-timetag` by creating a `.gitimetagrc` file in your **home
 
 ## ❓ Troubleshooting
 
-- **"Not a git repository"**: Ensure you are running `git-timetag` inside a directory initialized with Git.
+- **"Not a git repository"**: Ensure you are running `gtt` inside a directory initialized with Git.
 - **"Tag already exists"**: Git will throw an error if you try to create a tag that already exists. Check your current tags with `git tag`.
 - **"Permission denied" (npm link)**: On macOS/Linux, you might need `sudo npm link`. On Windows, run your terminal as Administrator.
 
