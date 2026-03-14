@@ -13,7 +13,7 @@ describe('getRemoteBranches', () => {
     vi.resetModules();
 
     mockGit = {
-      getBranches: vi.fn(),
+      branch: vi.fn(),
     };
 
     simpleGit.mockReturnValue(mockGit);
@@ -22,19 +22,17 @@ describe('getRemoteBranches', () => {
   });
 
   it('returns list of remote branches', async () => {
-    const mockBranches = [
-      { name: 'origin/main' },
-      { name: 'origin/feature-x' },
-      { name: 'origin/develop' }
-    ];
-    mockGit.getBranches.mockResolvedValue(mockBranches);
+    const mockBranchSummary = {
+      all: ['origin/main', 'origin/feature-x', 'origin/develop']
+    };
+    mockGit.branch.mockResolvedValue(mockBranchSummary);
 
     const result = await git.getRemoteBranches();
-    expect(result).toEqual(['origin/main', 'origin/feature-x', 'origin/develop']);
+    expect(result).toEqual(['main', 'feature-x', 'develop']);
   });
 
   it('handles empty remote branches', async () => {
-    mockGit.getBranches.mockResolvedValue([]);
+    mockGit.branch.mockResolvedValue({ all: [] });
     const result = await git.getRemoteBranches();
     expect(result).toEqual([]);
   });

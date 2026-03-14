@@ -62,10 +62,10 @@ export async function isRepo() {
 
 export async function getRemoteBranches() {
   try {
-    const branches = await git.getBranches();
-    return branches
-      .filter(branch => branch.name.startsWith('origin/'))
-      .map(branch => branch.name);
+    const branches = await git.branch(['-r']);
+    return branches.all
+      .filter(branch => branch.startsWith('origin/'))
+      .map(branch => branch.replace('origin/', ''));
   } catch (e) {
     throw new Error(`Failed to get remote branches: ${e.message}`);
   }
