@@ -14,12 +14,24 @@ export async function getCurrentBranch() {
   }
 }
 
-export async function createTag(tagName, message) {
+export async function createTag(tagName, message, commitSha) {
   try {
+    const options = {};
+
+    if (commitSha) {
+      options.object = commitSha;
+    }
+
     if (message) {
-      await git.addAnnotatedTag(tagName, message);
+      options.annotated = true;
+      options.message = message;
+      await git.addTag(tagName, options);
     } else {
-      await git.addTag(tagName);
+      if (commitSha) {
+        await git.addTag(tagName, options);
+      } else {
+        await git.addTag(tagName);
+      }
     }
   } catch (e) {
     if (e.message?.includes('already exists')) {
@@ -45,5 +57,36 @@ export async function isRepo() {
     return await git.checkIsRepo();
   } catch (e) {
     return false;
+  }
+}
+
+export async function getRemoteBranches() {
+  try {
+    const branches = await git.getBranches();
+    return branches
+      .filter(branch => branch.name.startsWith('origin/'))
+      .map(branch => branch.name);
+  } catch (e) {
+    throw new Error(`Failed to get remote branches: ${e.message}`);
+  }
+}
+
+export async function getCommitHash(branchName) {
+  try {
+    const sha = await git.revparse([branchName]);
+    return sha.trim();
+  } catch (e) {
+    if (e.message?.includes('fatal: ambiguous argument')) {
+      throw new Error(`Branch "${branchName}" does not exist`);
+    }
+    throw new Error(`Failed to get commit hash for "${branchName}": ${e.message}`);
+  }
+}
+
+export async function fetchPrune() {
+  try {
+    await git.fetch(['--prune']);
+  } catch (e) {
+    throw new Error(`Failed to fetch from remote: ${e.message}`);
   }
 }

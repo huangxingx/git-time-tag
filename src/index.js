@@ -5,6 +5,7 @@ import inquirer from 'inquirer';
 import { format } from 'date-fns';
 import { loadConfig } from './config.js';
 import * as git from './git.js';
+import { getRemoteBranches, getCommitHash, fetchPrune } from './git.js';
 
 const program = new Command();
 
@@ -13,6 +14,7 @@ program
   .description('Git tag CLI tool with timestamp-based tagging')
   .version('1.0.0')
   .option('-m, --message <msg>', 'Add a message/comment to the tag (creates annotated tag)')
+  .option('-b, --branch <branch>', 'Specify remote branch to tag (e.g., origin/main)')
   .action(async (options) => {
     try {
       if (!(await git.isRepo())) {
@@ -21,6 +23,44 @@ program
       }
 
       const config = await loadConfig();
+
+      // Fetch latest remote branches
+      await fetchPrune();
+
+      // Get remote branch from option or prompt
+      let targetBranch = options.branch;
+      let targetCommitSha = null;
+
+      if (targetBranch) {
+        // Validate branch exists
+        const remoteBranches = await getRemoteBranches();
+        if (!remoteBranches.includes(targetBranch)) {
+          console.error(`Error: Branch "${targetBranch}" does not exist on remote.`);
+          console.error('Available branches:');
+          remoteBranches.forEach(b => console.error(`  - ${b}`));
+          process.exit(1);
+        }
+        targetCommitSha = await getCommitHash(targetBranch);
+        console.log(`Targeting branch: ${targetBranch} (${targetCommitSha.slice(0, 7)})`);
+      } else {
+        // Interactive branch selection
+        const remoteBranches = await getRemoteBranches();
+        if (remoteBranches.length > 0) {
+          const branchAnswer = await inquirer.prompt([
+            {
+              type: 'list',
+              name: 'branch',
+              message: 'Select remote branch to tag:',
+              choices: remoteBranches,
+              default: remoteBranches[0],
+            },
+          ]);
+          targetBranch = branchAnswer.branch;
+          targetCommitSha = await getCommitHash(targetBranch);
+          console.log(`Targeting branch: ${targetBranch} (${targetCommitSha.slice(0, 7)})`);
+        }
+      }
+
       const currentBranch = await git.getCurrentBranch();
 
       console.log(`Current branch: ${currentBranch}`);
@@ -76,11 +116,15 @@ program
         return;
       }
 
-      await git.createTag(tagName, tagMessage);
+      await git.createTag(tagName, tagMessage, targetCommitSha);
       console.log(`Tag "${tagName}" created${tagMessage ? ' (annotated)' : ''}.`);
 
       if (answers.push) {
-        console.log('Pushing to remote...');
+        if (targetBranch) {
+          console.log(`Pushing to remote (from ${targetBranch})...`);
+        } else {
+          console.log('Pushing to remote...');
+        }
         await git.pushTag(tagName);
         console.log('Pushed successfully.');
       }

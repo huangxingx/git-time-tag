@@ -14,7 +14,6 @@ describe('git', () => {
     mockGit = {
       status: vi.fn(),
       addTag: vi.fn(),
-      addAnnotatedTag: vi.fn(),
       push: vi.fn(),
       checkIsRepo: vi.fn(),
     };
@@ -58,10 +57,13 @@ describe('git', () => {
     });
 
     it('should create annotated tag with message', async () => {
-      mockGit.addAnnotatedTag.mockResolvedValue();
+      mockGit.addTag.mockResolvedValue();
 
       await expect(git.createTag('v1.0.0', 'Release message')).resolves.toBeUndefined();
-      expect(mockGit.addAnnotatedTag).toHaveBeenCalledWith('v1.0.0', 'Release message');
+      expect(mockGit.addTag).toHaveBeenCalledWith('v1.0.0', {
+        annotated: true,
+        message: 'Release message'
+      });
     });
 
     it('should throw specific error when tag already exists', async () => {

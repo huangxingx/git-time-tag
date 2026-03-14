@@ -42,18 +42,21 @@ Run the command in any Git repository:
 gtt
 ```
 
-### Interactive Steps
+### Interactive Flow
 
-1. **Select Suffix**: Choose a suffix (e.g., `test` or `main`).
-2. **Enter Message**: Add an optional comment/message for the tag.
-3. **Push Confirmation**: Confirm if you want to push the tag to `origin`.
-4. **Final Review**: A preview of the tag name and message is shown for final confirmation.
+1. **Select Remote Branch**: Choose from available remote branches (or use `-b` option)
+2. **Select Suffix**: Choose a suffix (e.g., `test` or `main`)
+3. **Enter Message**: Add an optional comment/message for the tag
+4. **Push Confirmation**: Confirm if you want to push the tag to `origin`
+5. **Final Review**: A preview of the tag name and message is shown for final confirmation
 
 ### Command Line Options
 
 ```bash
 gtt -m "Release version 1.0.0"    # Create tag with message
 gtt --message "Hotfix deploy"     # Create tag with message
+gtt -b origin/main                # Tag specific remote branch
+gtt -b origin/feature-x -m "RC1"  # Tag remote branch with message
 ```
 
 ## 🛠️ Configuration
