@@ -45,10 +45,13 @@ gtt
 ### Interactive Flow
 
 1. **Select Remote Branch**: Choose from available remote branches (or use `-b` option)
-2. **Select Suffix**: Choose a suffix (e.g., `test` or `main`)
-3. **Enter Message**: Add an optional comment/message for the tag
-4. **Push Confirmation**: Confirm if you want to push the tag to `origin`
-5. **Final Review**: A preview of the tag name and message is shown for final confirmation
+2. **Choose Tag Location** (if applicable): If the selected branch has been merged into main/master/develop, you'll be prompted to choose where to create the tag:
+   - On the source branch (the branch you selected)
+   - On the merged branch (e.g., main) - uses the merge commit
+3. **Select Suffix**: Choose a suffix (e.g., `test` or `main`)
+4. **Enter Message**: Add an optional comment/message for the tag
+5. **Push Confirmation**: Confirm if you want to push the tag to `origin`
+6. **Final Review**: A preview of the tag name and message is shown for final confirmation
 
 ### Command Line Options
 

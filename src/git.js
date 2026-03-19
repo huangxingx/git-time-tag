@@ -16,23 +16,21 @@ export async function getCurrentBranch() {
 
 export async function createTag(tagName, message, commitSha) {
   try {
-    const options = {};
+    // NOTE: simple-git addTag() does not reliably support tagging an arbitrary object/sha.
+    // Use raw `git tag` args so the tag always points to the intended commit.
+    if (message) {
+      const args = ['tag', '-a', tagName, '-m', message];
+      if (commitSha) args.push(commitSha);
+      await git.raw(args);
+      return;
+    }
 
     if (commitSha) {
-      options.object = commitSha;
+      await git.raw(['tag', tagName, commitSha]);
+      return;
     }
 
-    if (message) {
-      options.annotated = true;
-      options.message = message;
-      await git.addTag(tagName, options);
-    } else {
-      if (commitSha) {
-        await git.addTag(tagName, options);
-      } else {
-        await git.addTag(tagName);
-      }
-    }
+    await git.addTag(tagName);
   } catch (e) {
     if (e.message?.includes('already exists')) {
       throw new Error(`Tag "${tagName}" already exists`);
@@ -88,5 +86,34 @@ export async function fetchPrune() {
     await git.fetch(['--prune']);
   } catch (e) {
     throw new Error(`Failed to fetch from remote: ${e.message}`);
+  }
+}
+
+export async function isBranchMerged(sourceBranch, targetBranch) {
+  try {
+    // Check if sourceBranch is merged into targetBranch
+    const result = await git.raw(['branch', '-r', '--merged', `origin/${targetBranch}`]);
+    const mergedBranches = result.split('\n').map(b => b.trim().replace('origin/', ''));
+    return mergedBranches.includes(sourceBranch);
+  } catch (e) {
+    return false;
+  }
+}
+
+export async function getMergeCommit(sourceBranch, targetBranch) {
+  try {
+    // Find the merge commit where sourceBranch was merged into targetBranch
+    const result = await git.raw([
+      'log',
+      `origin/${targetBranch}`,
+      '--merges',
+      '--first-parent',
+      '--grep', `Merge.*${sourceBranch}`,
+      '-1',
+      '--format=%H'
+    ]);
+    return result.trim() || null;
+  } catch (e) {
+    return null;
   }
 }

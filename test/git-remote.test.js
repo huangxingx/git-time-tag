@@ -114,6 +114,7 @@ describe('createTag with commit', () => {
 
     mockGit = {
       addTag: vi.fn(),
+      raw: vi.fn(),
     };
 
     simpleGit.mockReturnValue(mockGit);
@@ -122,28 +123,25 @@ describe('createTag with commit', () => {
   });
 
   it('creates tag at specific commit when provided', async () => {
-    mockGit.addTag.mockResolvedValue();
+    mockGit.raw.mockResolvedValue();
 
     await git.createTag('v_202603141200_test', 'Release message', 'abc123');
 
-    expect(mockGit.addTag).toHaveBeenCalledWith(
+    expect(mockGit.raw).toHaveBeenCalledWith([
+      'tag',
+      '-a',
       'v_202603141200_test',
-      {
-        annotated: true,
-        message: 'Release message',
-        object: 'abc123'
-      }
-    );
+      '-m',
+      'Release message',
+      'abc123',
+    ]);
   });
 
   it('creates lightweight tag when no message provided', async () => {
-    mockGit.addTag.mockResolvedValue();
+    mockGit.raw.mockResolvedValue();
 
     await git.createTag('v_202603141200_test', null, 'abc123');
 
-    expect(mockGit.addTag).toHaveBeenCalledWith(
-      'v_202603141200_test',
-      { object: 'abc123' }
-    );
+    expect(mockGit.raw).toHaveBeenCalledWith(['tag', 'v_202603141200_test', 'abc123']);
   });
 });

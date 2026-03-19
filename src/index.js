@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import { format } from 'date-fns';
 import { loadConfig } from './config.js';
 import * as git from './git.js';
-import { getRemoteBranches, getCommitHash, fetchPrune } from './git.js';
+import { getRemoteBranches, getCommitHash, fetchPrune, isBranchMerged, getMergeCommit } from './git.js';
 
 const program = new Command();
 
@@ -14,7 +14,7 @@ program
   .description('Git tag CLI tool with timestamp-based tagging')
   .version('1.0.0')
   .option('-m, --message <msg>', 'Add a message/comment to the tag (creates annotated tag)')
-  .option('-b, --branch <branch>', 'Specify remote branch to tag (e.g., origin/main)')
+  .option('-b, --branch <branch>', 'Specify remote branch to tag (e.g., main or origin/main)')
   .action(async (options) => {
     try {
       if (!(await git.isRepo())) {
@@ -28,23 +28,25 @@ program
       await fetchPrune();
 
       // Get remote branch from option or prompt
-      let targetBranch = options.branch;
+      let selectedBranch = options.branch;
+      let targetBranch = null;
       let targetCommitSha = null;
+      const remoteBranches = await getRemoteBranches();
 
-      if (targetBranch) {
+      if (selectedBranch) {
+        // Normalize input: accept "origin/main" or "main"
+        if (selectedBranch.startsWith('origin/')) {
+          selectedBranch = selectedBranch.slice('origin/'.length);
+        }
         // Validate branch exists
-        const remoteBranches = await getRemoteBranches();
-        if (!remoteBranches.includes(targetBranch)) {
-          console.error(`Error: Branch "${targetBranch}" does not exist on remote.`);
+        if (!remoteBranches.includes(selectedBranch)) {
+          console.error(`Error: Branch "${selectedBranch}" does not exist on remote.`);
           console.error('Available branches:');
           remoteBranches.forEach(b => console.error(`  - ${b}`));
           process.exit(1);
         }
-        targetCommitSha = await getCommitHash(targetBranch);
-        console.log(`Targeting branch: ${targetBranch} (${targetCommitSha.slice(0, 7)})`);
       } else {
         // Interactive branch selection
-        const remoteBranches = await getRemoteBranches();
         if (remoteBranches.length > 0) {
           const branchAnswer = await inquirer.prompt([
             {
@@ -55,9 +57,60 @@ program
               default: remoteBranches[0],
             },
           ]);
-          targetBranch = branchAnswer.branch;
-          targetCommitSha = await getCommitHash(targetBranch);
+          selectedBranch = branchAnswer.branch;
+        }
+      }
+
+      // Check if the selected branch has been merged into main branches
+      const mainBranches = ['main', 'master', 'develop'].filter(b => remoteBranches.includes(b));
+      let mergedInto = [];
+      
+      for (const mainBranch of mainBranches) {
+        if (selectedBranch !== mainBranch && await isBranchMerged(selectedBranch, mainBranch)) {
+          mergedInto.push(mainBranch);
+        }
+      }
+
+      if (mergedInto.length > 0) {
+        console.log(`\nℹ️  Branch "${selectedBranch}" has been merged into: ${mergedInto.join(', ')}`);
+        
+        const targetAnswer = await inquirer.prompt([
+          {
+            type: 'list',
+            name: 'targetBranch',
+            message: 'Where do you want to create the tag?',
+            choices: [
+              { name: `On the source branch (${selectedBranch})`, value: selectedBranch },
+              ...mergedInto.map(b => ({ name: `On the merged branch (${b})`, value: b })),
+            ],
+            default: mergedInto[0],
+          },
+        ]);
+        
+        targetBranch = targetAnswer.targetBranch;
+        
+        if (targetBranch !== selectedBranch) {
+          // Try to find the merge commit
+          const mergeCommit = await getMergeCommit(selectedBranch, targetBranch);
+          if (mergeCommit) {
+            targetCommitSha = mergeCommit;
+            console.log(`Using merge commit on ${targetBranch}: ${targetCommitSha.slice(0, 7)}`);
+          } else {
+            // Fallback to the latest commit on target branch
+            targetCommitSha = await getCommitHash(`origin/${targetBranch}`);
+            console.log(`Using latest commit on ${targetBranch}: ${targetCommitSha.slice(0, 7)}`);
+          }
+        } else {
+          targetCommitSha = await getCommitHash(`origin/${selectedBranch}`);
+          console.log(`Using commit on ${selectedBranch}: ${targetCommitSha.slice(0, 7)}`);
+        }
+      } else {
+        targetBranch = selectedBranch;
+        if (selectedBranch) {
+          targetCommitSha = await getCommitHash(`origin/${selectedBranch}`);
           console.log(`Targeting branch: ${targetBranch} (${targetCommitSha.slice(0, 7)})`);
+        } else {
+          console.log('No remote branch selected; tagging current HEAD.');
         }
       }
 
