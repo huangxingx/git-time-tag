@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>git-timetag - Git 标签管理工具</title>
+  <title>git-time-tag - Git 标签管理工具</title>
   <meta name="description" content="一个强大的 CLI 工具，用于创建和推送标准化格式的 Git 标签">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,12 +28,12 @@
   <!-- Navigation -->
   <nav class="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="#" class="text-xl font-bold text-gray-900">git-timetag</a>
+      <a href="#" class="text-xl font-bold text-gray-900">git-time-tag</a>
       <div class="hidden md:flex items-center space-x-6">
         <a href="#features" class="text-gray-600 hover:text-gray-900">功能</a>
         <a href="#usage" class="text-gray-600 hover:text-gray-900">使用</a>
         <a href="#config" class="text-gray-600 hover:text-gray-900">配置</a>
-        <a href="https://github.com/huangxingx/git-timetag" class="text-gray-600 hover:text-gray-900">GitHub</a>
+        <a href="https://github.com/huangxingx/git-time-tag" class="text-gray-600 hover:text-gray-900">GitHub</a>
       </div>
     </div>
   </nav>
@@ -49,7 +49,7 @@
       </p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <code class="code-block px-6 py-4 text-lg font-mono text-green-400">
-          npm install -g git-timetag
+          npm install -g git-time-tag
         </code>
         <button onclick="copyCommand()" class="px-6 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
           复制命令
@@ -114,8 +114,8 @@
           <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">1</div>
           <div>
             <h3 class="text-xl font-semibold mb-2">安装</h3>
-            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>git clone &lt;repository-url&gt;
-cd git-tool
+            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>git clone https://github.com/huangxingx/git-time-tag.git
+cd git-time-tag
 npm install
 npm link</code></pre>
           </div>
@@ -124,7 +124,7 @@ npm link</code></pre>
           <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">2</div>
           <div>
             <h3 class="text-xl font-semibold mb-2">运行</h3>
-            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>git-timetag</code></pre>
+            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>gtt</code></pre>
           </div>
         </div>
         <div class="flex items-start gap-4">
@@ -132,6 +132,8 @@ npm link</code></pre>
           <div>
             <h3 class="text-xl font-semibold mb-2">交互流程</h3>
             <ul class="text-gray-600 space-y-2">
+              <li>• 选择远程分支（或使用 -b 选项）</li>
+              <li>• 选择标签位置（如分支已合并）</li>
               <li>• 选择标签后缀（如 <code>test</code> 或 <code>main</code>）</li>
               <li>• 输入标签注释/说明（可选）</li>
               <li>• 确认是否推送到远程仓库</li>
@@ -190,10 +192,10 @@ npm link</code></pre>
       <h2 class="text-3xl md:text-4xl font-bold mb-6">准备好开始了吗？</h2>
       <p class="text-xl text-white/80 mb-8">立即体验标准化的 Git 标签管理</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="https://github.com/huangxingx/git-timetag" class="px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
+        <a href="https://github.com/huangxingx/git-time-tag" class="px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
           在 GitHub 上查看
         </a>
-        <code class="code-block px-6 py-4 text-lg font-mono text-green-400">git-timetag</code>
+        <code class="code-block px-6 py-4 text-lg font-mono text-green-400">git-time-tag</code>
       </div>
     </div>
   </section>
@@ -201,9 +203,9 @@ npm link</code></pre>
   <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 py-8">
     <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-      <p>&copy; 2026 git-timetag. MIT License.</p>
+      <p>&copy; 2026 git-time-tag. MIT License.</p>
       <div class="flex items-center space-x-6 mt-4 md:mt-0">
-        <a href="https://github.com/huangxingx/git-timetag" class="hover:text-white transition">GitHub</a>
+        <a href="https://github.com/huangxingx/git-time-tag" class="hover:text-white transition">GitHub</a>
         <a href="#" class="hover:text-white transition">文档</a>
       </div>
     </div>
@@ -211,7 +213,7 @@ npm link</code></pre>
 
   <script>
     function copyCommand() {
-      navigator.clipboard.writeText('npm install -g git-timetag');
+      navigator.clipboard.writeText('npm install -g git-time-tag');
       const feedback = document.getElementById('copy-feedback');
       feedback.textContent = '已复制到剪贴板 ✓';
       feedback.style.opacity = '1';

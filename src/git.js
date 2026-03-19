@@ -93,7 +93,10 @@ export async function isBranchMerged(sourceBranch, targetBranch) {
   try {
     // Check if sourceBranch is merged into targetBranch
     const result = await git.raw(['branch', '-r', '--merged', `origin/${targetBranch}`]);
-    const mergedBranches = result.split('\n').map(b => b.trim().replace('origin/', ''));
+    const mergedBranches = result
+      .split('\n')
+      .map(b => b.trim().replace(/^\*\s*/, '').replace('origin/', ''))
+      .filter(b => b); // Remove empty lines
     return mergedBranches.includes(sourceBranch);
   } catch (e) {
     return false;
@@ -103,16 +106,41 @@ export async function isBranchMerged(sourceBranch, targetBranch) {
 export async function getMergeCommit(sourceBranch, targetBranch) {
   try {
     // Find the merge commit where sourceBranch was merged into targetBranch
-    const result = await git.raw([
-      'log',
-      `origin/${targetBranch}`,
-      '--merges',
-      '--first-parent',
-      '--grep', `Merge.*${sourceBranch}`,
-      '-1',
-      '--format=%H'
-    ]);
-    return result.trim() || null;
+    // Try multiple patterns to match different merge commit message formats
+    const patterns = [
+      `Merge.*${sourceBranch}`,
+      `Merge branch.*${sourceBranch}`,
+      `Merge ${sourceBranch} into`,
+    ];
+
+    for (const pattern of patterns) {
+      const result = await git.raw([
+        'log',
+        `origin/${targetBranch}`,
+        '--merges',
+        '--first-parent',
+        '--grep', pattern,
+        '-1',
+        '--format=%H'
+      ]);
+      const sha = result.trim();
+      if (sha) {
+        return sha;
+      }
+    }
+
+    // Fallback: try to find merge commit using merge-base
+    const mergeBaseResult = await git.raw(['merge-base', `origin/${targetBranch}`, `origin/${sourceBranch}`]);
+    const mergeBase = mergeBaseResult.trim();
+    if (mergeBase) {
+      // Verify this is actually a merge commit
+      const commitType = await git.raw(['rev-parse', `${mergeBase}^@`]);
+      if (commitType) {
+        return mergeBase;
+      }
+    }
+
+    return null;
   } catch (e) {
     return null;
   }
