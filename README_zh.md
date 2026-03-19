@@ -18,7 +18,7 @@
 
 1. **克隆仓库**：
    ```bash
-   git clone git@github.com:huangxingx/git-time-tag.git
+   git clone https://github.com/huangxingx/git-time-tag.git
    cd git-time-tag
    ```
 

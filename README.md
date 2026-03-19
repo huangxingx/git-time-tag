@@ -19,7 +19,7 @@ A powerful and flexible CLI tool to create and push Git tags with a standardized
 
 1. **Clone the repository**:
    ```bash
-   git clone git@github.com:huangxingx/git-time-tag.git
+   git clone https://github.com/huangxingx/git-time-tag.git
    cd git-time-tag
    ```
 
