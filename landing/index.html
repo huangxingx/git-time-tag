@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,136 +8,341 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+            accent: {
+              purple: '#a855f7',
+              pink: '#ec4899',
+              orange: '#f97316',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.6s ease-out forwards',
+            'slide-up': 'slideUp 0.6s ease-out forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'gradient': 'gradient 8s ease infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            gradient: {
+              '0%, 100%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    html { font-family: 'Inter', sans-serif; }
-    .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
     }
-    .code-block {
-      background: #1e1e2e;
-      border-radius: 8px;
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
     }
-    .feature-card:hover {
-      transform: translateY(-4px);
-      transition: transform 0.2s ease;
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Gradient animation */
+    .gradient-animated {
+      background: linear-gradient(-45deg, #0ea5e9, #a855f7, #ec4899, #0ea5e9);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glass effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Glow effect */
+    .glow {
+      box-shadow: 0 0 20px rgba(14, 165, 233, 0.3),
+                  0 0 40px rgba(168, 85, 247, 0.1);
+    }
+
+    .glow-purple {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3),
+                  0 0 40px rgba(236, 72, 153, 0.1);
+    }
+
+    /* Code block theme */
+    .code-theme {
+      background: #0d1117;
+      border: 1px solid #30363d;
+    }
+
+    /* Selection */
+    ::selection {
+      background: rgba(14, 165, 233, 0.3);
+      color: #fff;
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-[#0d1117] text-gray-100 min-h-screen antialiased">
+  <!-- Background Effects -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute top-1/2 -left-40 w-80 h-80 bg-accent-purple/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+    <div class="absolute -bottom-40 right-1/3 w-80 h-80 bg-accent-pink/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+  </div>
+
   <!-- Navigation -->
-  <nav class="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="#" class="text-xl font-bold text-gray-900">git-time-tag</a>
-      <div class="hidden md:flex items-center space-x-6">
-        <a href="#features" class="text-gray-600 hover:text-gray-900">功能</a>
-        <a href="#usage" class="text-gray-600 hover:text-gray-900">使用</a>
-        <a href="#config" class="text-gray-600 hover:text-gray-900">配置</a>
-        <a href="https://github.com/huangxingx/git-time-tag" class="text-gray-600 hover:text-gray-900">GitHub</a>
+  <nav class="fixed w-full z-50 glass">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2 text-xl font-bold">
+          <svg class="w-8 h-8 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+          </svg>
+          <span class="bg-gradient-to-r from-brand-400 to-accent-purple bg-clip-text text-transparent">git-time-tag</span>
+        </a>
+        <div class="flex items-center gap-6">
+          <div class="hidden md:flex items-center gap-6">
+            <a href="#features" class="text-gray-400 hover:text-gray-100 transition-colors text-sm">功能</a>
+            <a href="#usage" class="text-gray-400 hover:text-gray-100 transition-colors text-sm">使用</a>
+            <a href="#config" class="text-gray-400 hover:text-gray-100 transition-colors text-sm">配置</a>
+          </div>
+          <a href="https://github.com/huangxingx/git-time-tag" class="flex items-center gap-2 px-4 py-2 glass rounded-lg hover:bg-white/10 transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            <span class="text-sm font-medium">GitHub</span>
+          </a>
+        </div>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section class="gradient-bg text-white pt-32 pb-20">
+  <section class="relative pt-32 pb-20 overflow-hidden">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6">
-        Git 标签，从未如此简单
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm text-brand-400 mb-8 animate-fade-in">
+        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+        v1.0.0 现已发布
+      </div>
+
+      <!-- Main Heading -->
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-6 animate-slide-up" style="animation-delay: 0.1s;">
+        <span class="bg-gradient-to-r from-brand-400 via-accent-purple to-accent-pink bg-clip-text text-transparent">Git 标签管理</span>
+        <br />
+        <span class="text-gray-100">从未如此简单</span>
       </h1>
-      <p class="text-xl md:text-2xl text-white/80 mb-8">
+
+      <!-- Subtitle -->
+      <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-2xl mx-auto animate-slide-up" style="animation-delay: 0.2s;">
         标准化的版本标签管理工具，让项目版本控制更加规范高效
       </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <code class="code-block px-6 py-4 text-lg font-mono text-green-400">
-          npm install -g git-time-tag
-        </code>
-        <button onclick="copyCommand()" class="px-6 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
-          复制命令
-        </button>
+
+      <!-- Install Command -->
+      <div class="animate-slide-up glow" style="animation-delay: 0.3s;">
+        <div class="code-theme rounded-xl p-1 max-w-2xl mx-auto">
+          <div class="flex items-center justify-between px-4 py-2 border-b border-gray-700">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-red-500"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500"></span>
+            </div>
+            <span class="text-xs text-gray-500 font-mono">terminal</span>
+          </div>
+          <div class="flex items-center justify-between px-4 py-4">
+            <code class="font-mono text-sm md:text-base">
+              <span class="text-green-400">$</span>
+              <span class="text-gray-100 ml-2">npm install -g @joemuhuang/gtt</span>
+            </code>
+            <button onclick="copyCommand()" class="flex items-center gap-2 px-3 py-1.5 glass rounded-lg hover:bg-white/10 transition-colors group" aria-label="复制命令">
+              <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-100 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <p id="copy-feedback" class="mt-3 text-sm text-green-400 opacity-0 transition-opacity">✓ 已复制到剪贴板</p>
       </div>
-      <p id="copy-feedback" class="mt-3 text-sm text-white/60 opacity-0 transition-opacity"></p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-slide-up" style="animation-delay: 0.4s;">
+        <a href="#usage" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all shadow-lg shadow-brand-500/25">
+          快速开始
+        </a>
+        <a href="https://github.com/huangxingx/git-time-tag" class="w-full sm:w-auto px-8 py-3.5 glass text-gray-100 font-semibold rounded-lg hover:bg-white/10 transition-all">
+          查看源码
+        </a>
+      </div>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section id="features" class="py-20">
+  <section id="features" class="py-20 relative">
     <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">核心功能</h2>
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          <span class="bg-gradient-to-r from-brand-400 to-accent-purple bg-clip-text text-transparent">核心功能</span>
+        </h2>
+        <p class="text-gray-400">强大的功能，让标签管理变得轻松</p>
+      </div>
+
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Feature 1 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-brand-500/20 to-brand-600/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">标准化格式</h3>
-          <p class="text-gray-600 text-sm">自动生成如 <code>v_202403211200_test</code> 的标准化标签</p>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">标准化格式</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">自动生成如 <code class="text-brand-400">v_202403211200_test</code> 的标准化标签，保持一致性</p>
         </div>
-        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+        <!-- Feature 2 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-accent-purple/20 to-accent-pink/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">交互式体验</h3>
-          <p class="text-gray-600 text-sm">友好的命令行交互，引导式完成标签创建</p>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">交互式体验</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">友好的命令行交互，引导式完成标签创建流程</p>
         </div>
-        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+        <!-- Feature 3 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">标签注释</h3>
-          <p class="text-gray-600 text-sm">支持为标签添加注释/说明信息（Annotated Tags）</p>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">标签注释</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">支持为标签添加详细说明信息（Annotated Tags）</p>
         </div>
-        <div class="feature-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+        <!-- Feature 4 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">高度可配置</h3>
-          <p class="text-gray-600 text-sm">自定义标签格式、日期格式和可用后缀</p>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">高度可配置</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">自定义标签格式、日期格式和可用后缀选项</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Usage Section -->
-  <section id="usage" class="py-20 bg-gray-100">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">快速开始</h2>
-      <div class="space-y-8">
-        <div class="flex items-start gap-4">
-          <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">1</div>
-          <div>
-            <h3 class="text-xl font-semibold mb-2">安装</h3>
-            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>git clone https://github.com/huangxingx/git-time-tag.git
-cd git-time-tag
-npm install
-npm link</code></pre>
+  <section id="usage" class="py-20 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-900/5 to-transparent"></div>
+    <div class="max-w-4xl mx-auto px-4 relative">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          <span class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">快速开始</span>
+        </h2>
+        <p class="text-gray-400">简单的三步，开始使用 git-time-tag</p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Step 1 -->
+        <div class="group flex gap-4 p-6 glass rounded-xl hover:bg-white/5 transition-all">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg shadow-brand-500/30">1</div>
+          <div class="flex-1">
+            <h3 class="text-xl font-semibold mb-3 text-gray-100">安装</h3>
+            <div class="code-theme rounded-lg p-4 overflow-x-auto">
+              <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">git clone https://github.com/huangxingx/git-time-tag.git</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">cd git-time-tag</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">npm install</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">npm link</span></code></pre>
+            </div>
           </div>
         </div>
-        <div class="flex items-start gap-4">
-          <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">2</div>
-          <div>
-            <h3 class="text-xl font-semibold mb-2">运行</h3>
-            <pre class="code-block p-4 text-gray-300 font-mono text-sm overflow-x-auto"><code>gtt</code></pre>
+
+        <!-- Step 2 -->
+        <div class="group flex gap-4 p-6 glass rounded-xl hover:bg-white/5 transition-all">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-accent-purple to-accent-pink rounded-full flex items-center justify-center font-bold text-white shadow-lg shadow-accent-purple/30">2</div>
+          <div class="flex-1">
+            <h3 class="text-xl font-semibold mb-3 text-gray-100">运行</h3>
+            <div class="code-theme rounded-lg p-4 overflow-x-auto">
+              <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">gtt</span></code></pre>
+            </div>
           </div>
         </div>
-        <div class="flex items-start gap-4">
-          <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">3</div>
-          <div>
-            <h3 class="text-xl font-semibold mb-2">交互流程</h3>
-            <ul class="text-gray-600 space-y-2">
-              <li>• 选择远程分支（或使用 -b 选项）</li>
-              <li>• 选择标签位置（如分支已合并）</li>
-              <li>• 选择标签后缀（如 <code>test</code> 或 <code>main</code>）</li>
-              <li>• 输入标签注释/说明（可选）</li>
-              <li>• 确认是否推送到远程仓库</li>
-              <li>• 预览标签名称并最终确认</li>
+
+        <!-- Step 3 -->
+        <div class="group flex gap-4 p-6 glass rounded-xl hover:bg-white/5 transition-all">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg shadow-green-500/30">3</div>
+          <div class="flex-1">
+            <h3 class="text-xl font-semibold mb-3 text-gray-100">交互流程</h3>
+            <ul class="text-gray-400 space-y-2">
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>选择远程分支（或使用 <code class="text-brand-400">-b</code> 选项）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>选择标签位置（如分支已合并）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>选择标签后缀（如 <code class="text-brand-400">test</code> 或 <code class="text-brand-400">main</code>）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>输入标签注释/说明（可选）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>确认是否推送到远程仓库</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>预览标签名称并最终确认</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -146,39 +351,53 @@ npm link</code></pre>
   </section>
 
   <!-- Config Section -->
-  <section id="config" class="py-20">
+  <section id="config" class="py-20 relative">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">配置选项</h2>
-      <p class="text-center text-gray-600 mb-12">创建 <code>.gitimetagrc</code> 文件（项目根目录或用户主目录）</p>
-      <pre class="code-block p-6 text-gray-300 font-mono text-sm overflow-x-auto"><code>{
-  "tagFormat": "v_{datetime}_{suffix}",
-  "datetimeFormat": "yyyyMMddHHmm",
-  "suffixes": ["alpha", "beta", "stable"]
-}</code></pre>
-      <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          <span class="bg-gradient-to-r from-accent-purple to-accent-pink bg-clip-text text-transparent">配置选项</span>
+        </h2>
+        <p class="text-gray-400">创建 <code class="text-accent-purple">.gitimetagrc</code> 文件自定义行为</p>
+      </div>
+
+      <!-- Config Example -->
+      <div class="code-theme rounded-xl p-1 glow-purple mb-8">
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-700">
+          <span class="text-xs text-gray-500 font-mono">.gitimetagrc</span>
+          <button class="text-xs text-gray-400 hover:text-gray-100 transition-colors">JSON</button>
+        </div>
+        <pre class="p-4 overflow-x-auto"><code class="font-mono text-sm"><span class="text-accent-purple">{</span>
+  <span class="text-accent-orange">"tagFormat"</span><span class="text-gray-400">:</span> <span class="text-green-400">"v_{datetime}_{suffix}"</span><span class="text-gray-400">,</span>
+  <span class="text-accent-orange">"datetimeFormat"</span><span class="text-gray-400">:</span> <span class="text-green-400">"yyyyMMddHHmm"</span><span class="text-gray-400">,</span>
+  <span class="text-accent-orange">"suffixes"</span><span class="text-gray-400">:</span> <span class="text-accent-purple">[</span><span class="text-green-400">"alpha"</span><span class="text-gray-400">,</span> <span class="text-green-400">"beta"</span><span class="text-gray-400">,</span> <span class="text-green-400">"stable"</span><span class="text-accent-purple">]</span>
+<span class="text-accent-purple">}</span></code></pre>
+      </div>
+
+      <!-- Config Table -->
+      <div class="glass rounded-xl overflow-hidden">
         <table class="w-full text-sm">
-          <thead class="bg-gray-50">
+          <thead class="bg-white/5">
             <tr>
-              <th class="px-6 py-3 text-left font-semibold text-gray-900">选项</th>
-              <th class="px-6 py-3 text-left font-semibold text-gray-900">描述</th>
-              <th class="px-6 py-3 text-left font-semibold text-gray-900">默认值</th>
+              <th class="px-6 py-4 text-left font-semibold text-gray-100">选项</th>
+              <th class="px-6 py-4 text-left font-semibold text-gray-100">描述</th>
+              <th class="px-6 py-4 text-left font-semibold text-gray-100">默认值</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
-            <tr>
-              <td class="px-6 py-4 font-mono text-purple-600">tagFormat</td>
-              <td class="px-6 py-4 text-gray-600">标签模板</td>
-              <td class="px-6 py-4 text-gray-600">v_{datetime}_{suffix}</td>
+          <tbody class="divide-y divide-gray-700">
+            <tr class="hover:bg-white/5 transition-colors">
+              <td class="px-6 py-4 font-mono text-brand-400">tagFormat</td>
+              <td class="px-6 py-4 text-gray-400">标签模板</td>
+              <td class="px-6 py-4 text-gray-400 font-mono text-xs">v_{datetime}_{suffix}</td>
             </tr>
-            <tr>
-              <td class="px-6 py-4 font-mono text-purple-600">datetimeFormat</td>
-              <td class="px-6 py-4 text-gray-600">日期格式（date-fns）</td>
-              <td class="px-6 py-4 text-gray-600">yyyyMMddHHmm</td>
+            <tr class="hover:bg-white/5 transition-colors">
+              <td class="px-6 py-4 font-mono text-brand-400">datetimeFormat</td>
+              <td class="px-6 py-4 text-gray-400">日期格式（date-fns）</td>
+              <td class="px-6 py-4 text-gray-400 font-mono text-xs">yyyyMMddHHmm</td>
             </tr>
-            <tr>
-              <td class="px-6 py-4 font-mono text-purple-600">suffixes</td>
-              <td class="px-6 py-4 text-gray-600">后缀选项数组</td>
-              <td class="px-6 py-4 text-gray-600">["test", "main"]</td>
+            <tr class="hover:bg-white/5 transition-colors">
+              <td class="px-6 py-4 font-mono text-brand-400">suffixes</td>
+              <td class="px-6 py-4 text-gray-400">后缀选项数组</td>
+              <td class="px-6 py-4 text-gray-400 font-mono text-xs">["test", "main"]</td>
             </tr>
           </tbody>
         </table>
@@ -187,40 +406,66 @@ npm link</code></pre>
   </section>
 
   <!-- CTA Section -->
-  <section class="gradient-bg text-white py-20">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">准备好开始了吗？</h2>
-      <p class="text-xl text-white/80 mb-8">立即体验标准化的 Git 标签管理</p>
+  <section class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 gradient-animated opacity-20"></div>
+    <div class="max-w-4xl mx-auto px-4 text-center relative">
+      <h2 class="text-3xl md:text-5xl font-bold mb-6">
+        <span class="bg-gradient-to-r from-brand-400 via-accent-purple to-accent-pink bg-clip-text text-transparent">准备好开始了吗？</span>
+      </h2>
+      <p class="text-xl text-gray-400 mb-10">立即体验标准化的 Git 标签管理</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="https://github.com/huangxingx/git-time-tag" class="px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition">
+        <a href="https://github.com/huangxingx/git-time-tag" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
           在 GitHub 上查看
         </a>
-        <code class="code-block px-6 py-4 text-lg font-mono text-green-400">git-time-tag</code>
+        <code class="w-full sm:w-auto px-6 py-4 glass text-brand-400 font-mono rounded-lg">
+          git-time-tag
+        </code>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-400 py-8">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-      <p>&copy; 2026 git-time-tag. MIT License.</p>
-      <div class="flex items-center space-x-6 mt-4 md:mt-0">
-        <a href="https://github.com/huangxingx/git-time-tag" class="hover:text-white transition">GitHub</a>
-        <a href="#" class="hover:text-white transition">文档</a>
+  <footer class="border-t border-gray-800 py-8">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2 text-gray-400">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+          </svg>
+          <span class="text-sm">&copy; 2026 git-time-tag. MIT License.</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="https://github.com/huangxingx/git-time-tag" class="text-gray-400 hover:text-gray-100 transition-colors text-sm">GitHub</a>
+          <a href="#usage" class="text-gray-400 hover:text-gray-100 transition-colors text-sm">文档</a>
+        </div>
       </div>
     </div>
   </footer>
 
   <script>
     function copyCommand() {
-      navigator.clipboard.writeText('npm install -g git-time-tag');
+      navigator.clipboard.writeText('npm install -g @joemuhuang/gtt');
       const feedback = document.getElementById('copy-feedback');
-      feedback.textContent = '已复制到剪贴板 ✓';
+      feedback.textContent = '✓ 已复制到剪贴板';
       feedback.style.opacity = '1';
       setTimeout(() => {
         feedback.style.opacity = '0';
       }, 2000);
     }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
   </script>
 </body>
 </html>

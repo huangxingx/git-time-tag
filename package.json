@@ -1,11 +1,11 @@
 {
-  "name": "gtt",
+  "name": "@joemuhuang/gtt",
   "version": "1.0.0",
   "description": "A CLI tool to create and push git tags with a standardized format.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "gtt": "./src/index.js"
+    "gtt": "src/index.js"
   },
   "scripts": {
     "test": "vitest run"
@@ -16,7 +16,7 @@
     "cli"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "commander": "^12.0.0",
     "date-fns": "^3.6.0",
@@ -25,5 +25,16 @@
   },
   "devDependencies": {
     "vitest": "^4.0.18"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huangxingx/git-timetag.git"
+  },
+  "bugs": {
+    "url": "https://github.com/huangxingx/git-timetag/issues"
+  },
+  "homepage": "https://github.com/huangxingx/git-timetag#readme"
 }

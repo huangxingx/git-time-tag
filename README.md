@@ -17,6 +17,14 @@ A powerful and flexible CLI tool to create and push Git tags with a standardized
 
 ## ⚙️ Installation
 
+**Option 1: Install from npm** (Recommended)
+
+```bash
+npm install -g @joemuhuang/gtt
+```
+
+**Option 2: Build from source**
+
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/huangxingx/git-time-tag.git
@@ -28,7 +36,7 @@ A powerful and flexible CLI tool to create and push Git tags with a standardized
    npm install
    ```
 
-3. **Link globally** (Optional but recommended):
+3. **Link globally**:
    ```bash
    npm link
    ```
@@ -96,4 +104,4 @@ You can customize `gtt` by creating a `.gitimetagrc` file in your **home directo
 
 ## 📄 License
 
-[ISC](LICENSE)
+[MIT](LICENSE)
