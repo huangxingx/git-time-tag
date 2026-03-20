@@ -16,6 +16,14 @@
 
 ## ⚙️ 安装步骤
 
+**方式 1：从 npm 安装**（推荐）
+
+```bash
+npm install -g @joemuhuang/gtt
+```
+
+**方式 2：从源码构建**
+
 1. **克隆仓库**：
    ```bash
    git clone https://github.com/huangxingx/git-time-tag.git
@@ -27,7 +35,7 @@
    npm install
    ```
 
-3. **全局链接** (可选，但推荐)：
+3. **全局链接**：
    ```bash
    npm link
    ```
@@ -86,4 +94,4 @@ gtt
 
 ## 📄 开源协议
 
-[ISC](LICENSE)
+[MIT](LICENSE)
