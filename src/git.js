@@ -2,6 +2,8 @@ import { simpleGit } from 'simple-git';
 
 const git = simpleGit();
 
+const LOADING_CHARS = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+
 export async function getCurrentBranch() {
   try {
     const status = await git.status();
@@ -58,12 +60,24 @@ export async function isRepo() {
   }
 }
 
-export async function getRemoteBranches() {
+export async function getBranchesWithTime() {
   try {
-    const branches = await git.branch(['-r']);
-    return branches.all
-      .filter(branch => branch.startsWith('origin/'))
-      .map(branch => branch.replace('origin/', ''));
+    // Get remote branches with their latest commit date using for-each-ref
+    const result = await git.raw([
+      'for-each-ref',
+      '--sort=-committerdate',
+      '--format=%(refname:short) %(creatordate:relative)',
+      'refs/remotes/origin/'
+    ]);
+
+    const lines = result.trim().split('\n').filter(line => line && !line.includes('->'));
+
+    return lines.map(line => {
+      const parts = line.split(' ');
+      const name = parts[0].replace('origin/', '');
+      const timeInfo = parts.slice(1).join(' ');
+      return { name, timeInfo };
+    });
   } catch (e) {
     throw new Error(`Failed to get remote branches: ${e.message}`);
   }
@@ -82,9 +96,30 @@ export async function getCommitHash(branchName) {
 }
 
 export async function fetchPrune() {
+  let loadingIndex = 0;
+  let loadingInterval = null;
+
+  const startLoading = () => {
+    process.stdout.write('Fetching from remote... ');
+    loadingInterval = setInterval(() => {
+      process.stdout.write(`\rFetching from remote... ${LOADING_CHARS[loadingIndex]} `);
+      loadingIndex = (loadingIndex + 1) % LOADING_CHARS.length;
+    }, 80);
+  };
+
+  const stopLoading = () => {
+    if (loadingInterval) {
+      clearInterval(loadingInterval);
+      process.stdout.write('\rFetching from remote... done\n');
+    }
+  };
+
   try {
+    startLoading();
     await git.fetch(['--prune']);
+    stopLoading();
   } catch (e) {
+    stopLoading();
     throw new Error(`Failed to fetch from remote: ${e.message}`);
   }
 }

@@ -164,7 +164,7 @@
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm text-brand-400 mb-8 animate-fade-in">
         <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-        v1.0.0 现已发布
+        v1.1.0 现已发布
       </div>
 
       <!-- Main Heading -->
@@ -243,22 +243,22 @@
         <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
           <div class="w-12 h-12 bg-gradient-to-br from-accent-purple/20 to-accent-pink/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <svg class="w-6 h-6 text-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2 text-gray-100">交互式体验</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">友好的命令行交互，引导式完成标签创建流程</p>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">智能分支选择</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">支持搜索远程分支，显示更新时间，自动检测分支合并状态</p>
         </div>
 
         <!-- Feature 3 -->
         <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
           <div class="w-12 h-12 bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2 text-gray-100">标签注释</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">支持为标签添加详细说明信息（Annotated Tags）</p>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">灵活标签位置</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">分支合并后，可选择在源分支或目标分支（使用合并提交）上创建标签</p>
         </div>
 
         <!-- Feature 4 -->
@@ -270,7 +270,51 @@
             </svg>
           </div>
           <h3 class="text-lg font-semibold mb-2 text-gray-100">高度可配置</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">自定义标签格式、日期格式和可用后缀选项</p>
+          <p class="text-gray-400 text-sm leading-relaxed">自定义标签格式、日期格式、后缀选项，支持保存自定义配置</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">标签注释</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">支持为标签添加详细说明信息（Annotated Tags），记录版本变更</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-pink-500/20 to-rose-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">安全推送</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">推送前确认，完善的错误处理和认证失败提示</p>
+        </div>
+
+        <!-- Feature 7 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-yellow-500/20 to-amber-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.01M9 4v5h.01M14 4v5h.01M19 4v5h.01M4 9v5h.01M9 9v5h.01M14 9v5h.01M19 9v5h.01M4 14v5h.01M9 14v5h.01M14 14v5h.01M19 14v5h.01M4 19v5h.01M9 19v5h.01M14 19v5h.01M19 19v5h.01"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">自定义后缀</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">支持自定义后缀或无后缀模式，可选择保存到本地或全局配置</p>
+        </div>
+
+        <!-- Feature 8 -->
+        <div class="group p-6 glass rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-gray-100">远程同步</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">自动执行 git fetch --prune，清理过期远程分支引用</p>
         </div>
       </div>
     </div>
@@ -294,10 +338,7 @@
           <div class="flex-1">
             <h3 class="text-xl font-semibold mb-3 text-gray-100">安装</h3>
             <div class="code-theme rounded-lg p-4 overflow-x-auto">
-              <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">git clone https://github.com/huangxingx/git-time-tag.git</span>
-<span class="text-green-400">$</span> <span class="text-gray-100">cd git-time-tag</span>
-<span class="text-green-400">$</span> <span class="text-gray-100">npm install</span>
-<span class="text-green-400">$</span> <span class="text-gray-100">npm link</span></code></pre>
+              <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">npm install -g @joemuhuang/gtt</span></code></pre>
             </div>
           </div>
         </div>
@@ -310,6 +351,13 @@
             <div class="code-theme rounded-lg p-4 overflow-x-auto">
               <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">gtt</span></code></pre>
             </div>
+            <p class="text-gray-400 text-sm mt-3">或使用命令行选项：</p>
+            <div class="code-theme rounded-lg p-4 overflow-x-auto">
+              <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">gtt -h                           # 显示帮助信息</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">gtt -m "发布版本 1.0.0"</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">gtt -b origin/main</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">gtt -b origin/feature-x -m "RC1"</span></code></pre>
+            </div>
           </div>
         </div>
 
@@ -321,7 +369,11 @@
             <ul class="text-gray-400 space-y-2">
               <li class="flex items-start gap-2">
                 <span class="text-brand-400 mt-1">▸</span>
-                <span>选择远程分支（或使用 <code class="text-brand-400">-b</code> 选项）</span>
+                <span>自动获取远程分支（<code class="text-brand-400">git fetch --prune</code>）</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>搜索选择远程分支（显示更新时间）</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-400 mt-1">▸</span>
@@ -329,7 +381,7 @@
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-400 mt-1">▸</span>
-                <span>选择标签后缀（如 <code class="text-brand-400">test</code> 或 <code class="text-brand-400">main</code>）</span>
+                <span>选择标签后缀（支持自定义/无后缀）</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-400 mt-1">▸</span>
@@ -342,6 +394,10 @@
               <li class="flex items-start gap-2">
                 <span class="text-brand-400 mt-1">▸</span>
                 <span>预览标签名称并最终确认</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-400 mt-1">▸</span>
+                <span>保存自定义后缀到配置（可选）</span>
               </li>
             </ul>
           </div>
@@ -386,12 +442,12 @@
           <tbody class="divide-y divide-gray-700">
             <tr class="hover:bg-white/5 transition-colors">
               <td class="px-6 py-4 font-mono text-brand-400">tagFormat</td>
-              <td class="px-6 py-4 text-gray-400">标签模板</td>
+              <td class="px-6 py-4 text-gray-400">标签模板，支持 <code class="text-brand-400">{datetime}</code> 和 <code class="text-brand-400">{suffix}</code> 占位符</td>
               <td class="px-6 py-4 text-gray-400 font-mono text-xs">v_{datetime}_{suffix}</td>
             </tr>
             <tr class="hover:bg-white/5 transition-colors">
               <td class="px-6 py-4 font-mono text-brand-400">datetimeFormat</td>
-              <td class="px-6 py-4 text-gray-400">日期格式（date-fns）</td>
+              <td class="px-6 py-4 text-gray-400">日期格式（date-fns 语法）</td>
               <td class="px-6 py-4 text-gray-400 font-mono text-xs">yyyyMMddHHmm</td>
             </tr>
             <tr class="hover:bg-white/5 transition-colors">
@@ -401,6 +457,17 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Command Line Options -->
+      <div class="mt-8">
+        <h3 class="text-xl font-semibold mb-4 text-gray-100">命令行选项</h3>
+        <div class="code-theme rounded-lg p-4 overflow-x-auto">
+          <pre class="font-mono text-sm"><code><span class="text-green-400">$</span> <span class="text-gray-100">gtt                              # 交互式创建标签</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">gtt -m "发布版本 1.0.0"           # 创建带消息的标签</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">gtt -b main                      # 指定远程分支</span>
+<span class="text-green-400">$</span> <span class="text-gray-100">gtt -b origin/feature-x -m "RC1"   # 指定分支并带消息</span></code></pre>
+        </div>
       </div>
     </div>
   </section>

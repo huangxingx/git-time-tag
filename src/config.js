@@ -83,3 +83,28 @@ export async function loadConfig() {
 
   return validateConfig(config);
 }
+
+export async function saveConfig(updates, scope = 'local') {
+  const configPath = scope === 'local'
+    ? path.join(process.cwd(), CONFIG_FILENAME)
+    : path.join(homedir(), CONFIG_FILENAME);
+
+  let existingConfig = {};
+
+  try {
+    const data = await fs.readFile(configPath, 'utf-8');
+    existingConfig = JSON.parse(data);
+  } catch (e) {
+    if (e.code !== 'ENOENT' && !(e instanceof SyntaxError)) {
+      throw e;
+    }
+  }
+
+  const mergedConfig = { ...existingConfig, ...updates };
+  const fullConfig = { ...DEFAULT_CONFIG, ...mergedConfig };
+  validateConfig(fullConfig);
+
+  await fs.writeFile(configPath, JSON.stringify(mergedConfig, null, 2), 'utf-8');
+
+  return configPath;
+}
