@@ -5,7 +5,7 @@ vi.mock('simple-git');
 import { simpleGit } from 'simple-git';
 import { fetchPrune } from '../src/git.js';
 
-describe('getRemoteBranches', () => {
+describe('getBranchesWithTime', () => {
   let mockGit;
   let git;
 
@@ -13,7 +13,7 @@ describe('getRemoteBranches', () => {
     vi.resetModules();
 
     mockGit = {
-      branch: vi.fn(),
+      raw: vi.fn(),
     };
 
     simpleGit.mockReturnValue(mockGit);
@@ -21,19 +21,22 @@ describe('getRemoteBranches', () => {
     git = await import('../src/git.js');
   });
 
-  it('returns list of remote branches', async () => {
-    const mockBranchSummary = {
-      all: ['origin/main', 'origin/feature-x', 'origin/develop']
-    };
-    mockGit.branch.mockResolvedValue(mockBranchSummary);
+  it('returns list of remote branches with time info', async () => {
+    mockGit.raw.mockResolvedValue(
+      'origin/main 2 days ago\norigin/feature-x 1 hour ago\norigin/develop 3 weeks ago'
+    );
 
-    const result = await git.getRemoteBranches();
-    expect(result).toEqual(['main', 'feature-x', 'develop']);
+    const result = await git.getBranchesWithTime();
+    expect(result).toEqual([
+      { name: 'main', timeInfo: '2 days ago' },
+      { name: 'feature-x', timeInfo: '1 hour ago' },
+      { name: 'develop', timeInfo: '3 weeks ago' },
+    ]);
   });
 
   it('handles empty remote branches', async () => {
-    mockGit.branch.mockResolvedValue({ all: [] });
-    const result = await git.getRemoteBranches();
+    mockGit.raw.mockResolvedValue('');
+    const result = await git.getBranchesWithTime();
     expect(result).toEqual([]);
   });
 });
