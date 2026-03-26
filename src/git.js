@@ -70,7 +70,7 @@ export async function getBranchesWithTime() {
       'refs/remotes/origin/'
     ]);
 
-    const lines = result.trim().split('\n').filter(line => line && !line.includes('->'));
+    const lines = result.trim().split('\n').filter(line => line && !line.includes('->') && !line.startsWith('origin '));
 
     return lines.map(line => {
       const parts = line.split(' ');

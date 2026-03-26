@@ -39,6 +39,18 @@ describe('getBranchesWithTime', () => {
     const result = await git.getBranchesWithTime();
     expect(result).toEqual([]);
   });
+
+  it('filters out origin HEAD reference', async () => {
+    mockGit.raw.mockResolvedValue(
+      'origin 2 days ago\norigin/main 2 days ago\norigin/feature-x 1 hour ago'
+    );
+
+    const result = await git.getBranchesWithTime();
+    expect(result).toEqual([
+      { name: 'main', timeInfo: '2 days ago' },
+      { name: 'feature-x', timeInfo: '1 hour ago' },
+    ]);
+  });
 });
 
 describe('getCommitHash', () => {
