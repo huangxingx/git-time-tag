@@ -180,3 +180,69 @@ export async function getMergeCommit(sourceBranch, targetBranch) {
     return null;
   }
 }
+
+/**
+ * 获取本地标签列表
+ */
+export async function getLocalTags(pattern = '*') {
+  try {
+    const result = await git.raw(['tag', '-l', pattern]);
+    return result.split('\n').filter(tag => tag.trim());
+  } catch (e) {
+    throw new Error(`Failed to get local tags: ${e.message}`);
+  }
+}
+
+/**
+ * 获取远程标签列表
+ */
+export async function getRemoteTags(pattern = '') {
+  try {
+    const result = await git.raw(['ls-remote', '--tags', 'origin']);
+    const tags = result
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => {
+        const parts = line.split('refs/tags/');
+        return parts[1]?.replace(/\^{}$/, '') || '';
+      })
+      .filter(tag => tag && (!pattern || tag.includes(pattern)));
+    return tags;
+  } catch (e) {
+    throw new Error(`Failed to get remote tags: ${e.message}`);
+  }
+}
+
+/**
+ * 删除本地标签
+ */
+export async function deleteLocalTag(tagName) {
+  try {
+    await git.deleteTag(tagName);
+  } catch (e) {
+    throw new Error(`Failed to delete tag "${tagName}": ${e.message}`);
+  }
+}
+
+/**
+ * 删除远程标签
+ */
+export async function deleteRemoteTag(tagName) {
+  try {
+    await git.push('origin', `:refs/tags/${tagName}`);
+  } catch (e) {
+    throw new Error(`Failed to delete remote tag "${tagName}": ${e.message}`);
+  }
+}
+
+/**
+ * 获取短提交哈希
+ */
+export async function getShortCommitHash(branchName) {
+  try {
+    const sha = await git.revparse(['--short', branchName]);
+    return sha.trim();
+  } catch (e) {
+    throw new Error(`Failed to get short commit hash for "${branchName}": ${e.message}`);
+  }
+}

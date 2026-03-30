@@ -6,36 +6,46 @@ const DEFAULT_CONFIG = {
   tagFormat: 'v_{datetime}_{suffix}',
   datetimeFormat: 'yyyyMMddHHmm',
   suffixes: ['test', 'main'],
+  mainBranches: ['main', 'master', 'develop'],
 };
 
 const CONFIG_FILENAME = '.gitimetagrc';
 
-const VALID_CONFIG_KEYS = ['tagFormat', 'datetimeFormat', 'suffixes'];
+const VALID_CONFIG_KEYS = ['tagFormat', 'datetimeFormat', 'suffixes', 'mainBranches'];
 
 function validateConfig(config) {
   const errors = [];
 
   // Validate suffixes
   if (!Array.isArray(config.suffixes) || config.suffixes.length === 0) {
-    errors.push('suffixes must be a non-empty array');
+    errors.push('suffixes 必须是非空数组');
   } else if (!config.suffixes.every(s => typeof s === 'string')) {
-    errors.push('suffixes must be an array of strings');
+    errors.push('suffixes 必须是字符串数组');
   }
 
   // Validate tagFormat
   if (typeof config.tagFormat !== 'string') {
-    errors.push('tagFormat must be a string');
+    errors.push('tagFormat 必须是字符串');
   } else if (!config.tagFormat.includes('{suffix}')) {
-    errors.push('tagFormat must include {suffix} placeholder');
+    errors.push('tagFormat 必须包含 {suffix} 占位符');
   }
 
   // Validate datetimeFormat
   if (typeof config.datetimeFormat !== 'string') {
-    errors.push('datetimeFormat must be a string');
+    errors.push('datetimeFormat 必须是字符串');
+  }
+
+  // Validate mainBranches
+  if (config.mainBranches !== undefined) {
+    if (!Array.isArray(config.mainBranches) || config.mainBranches.length === 0) {
+      errors.push('mainBranches 必须是非空数组');
+    } else if (!config.mainBranches.every(b => typeof b === 'string')) {
+      errors.push('mainBranches 必须是字符串数组');
+    }
   }
 
   if (errors.length > 0) {
-    throw new Error(`Invalid config: ${errors.join('; ')}`);
+    throw new Error(`配置无效：${errors.join('; ')}`);
   }
 
   return config;

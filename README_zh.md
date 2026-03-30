@@ -9,8 +9,12 @@
 - **标签位置选择**：当分支已合并时，可选择在源分支或目标分支（使用合并提交）上创建标签。
 - **标签消息**：支持创建带注释的标签（Annotated Tags），添加详细说明。
 - **自定义后缀**：支持自定义后缀或无后缀模式，可选择保存到配置。
-- **高度可配置**：自定义标签格式、日期时间格式以及可用的后缀选项。
+- **高度可配置**：自定义标签格式、日期时间格式、后缀选项以及主分支列表。
 - **Git 集成**：基于 `simple-git` 构建，性能稳定可靠。
+- **彩色输出**：美观的彩色终端输出，关键信息一目了然。
+- **标签管理**：支持查看、删除本地和远程标签。
+- **预览模式**：`--dry-run` 预览标签创建结果，避免误操作。
+- **扩展变量**：标签模板支持 `{branch}`、`{shortHash}` 等扩展变量。
 
 ## 📋 前置要求
 
@@ -78,6 +82,22 @@ gtt --message "Hotfix deploy"    # 创建带消息的标签
 gtt -b main                      # 指定远程分支（自动添加 origin/前缀）
 gtt -b origin/feature-x          # 指定远程分支
 gtt -b origin/feature-x -m "RC1" # 指定远程分支并带消息
+gtt --dry-run                    # 预览模式，不实际创建标签
+```
+
+### 子命令
+
+```bash
+gtt list                         # 显示本地标签列表
+gtt list -r                      # 显示远程标签列表
+gtt list -p "v_2024*"            # 过滤标签（支持通配符）
+gtt delete v_20240321_test       # 删除本地标签
+gtt delete v_20240321_test -r    # 删除本地和远程标签
+gtt delete v_20240321_test -f    # 强制删除，跳过确认
+gtt config show                  # 显示当前配置
+gtt config init                  # 初始化局部配置文件
+gtt init                         # 初始化局部配置文件
+gtt init -g                      # 初始化全局配置文件
 ```
 
 ## 🛠️ 配置说明
@@ -96,21 +116,33 @@ gtt -b origin/feature-x -m "RC1" # 指定远程分支并带消息
 {
   "tagFormat": "v_{datetime}_{suffix}",
   "datetimeFormat": "yyyyMMddHHmm",
-  "suffixes": ["alpha", "beta", "stable"]
+  "suffixes": ["alpha", "beta", "stable"],
+  "mainBranches": ["main", "master", "develop"]
 }
 ```
 
 | 选项 | 描述 | 默认值 |
 | :--- | :--- | :--- |
-| `tagFormat` | 标签的模板。支持 `{datetime}` 和 `{suffix}` 占位符。 | `v_{datetime}_{suffix}` |
+| `tagFormat` | 标签的模板。支持 `{datetime}`、`{suffix}`、`{branch}`、`{shortHash}` 占位符。 | `v_{datetime}_{suffix}` |
 | `datetimeFormat` | [date-fns](https://date-fns.org/v3.6.0/docs/format) 格式化字符串。 | `yyyyMMddHHmm` |
 | `suffixes` | 后缀提示中的选项数组。 | `["test", "main"]` |
+| `mainBranches` | 用于检测分支合并状态的主分支列表。 | `["main", "master", "develop"]` |
 
 ### 配置项说明
 
-- **tagFormat**: 支持 `{datetime}` 和 `{suffix}` 两个占位符，会分别被日期时间和后缀替换。
+- **tagFormat**: 支持 `{datetime}`、`{suffix}`、`{branch}`、`{shortHash}` 占位符，会分别被日期时间、后缀、分支名、短提交哈希替换。
 - **datetimeFormat**: 使用 date-fns 的 format 语法，支持任意日期格式。
 - **suffixes**: 数组中的每个字符串都会作为交互式选择中的一个选项。
+- **mainBranches**: 用于检测分支是否已合并的主分支列表，可根据项目实际情况自定义。
+
+### 彩色输出说明
+
+`gtt` 使用彩色输出提升可读性：
+- 🟢 绿色 - 成功操作
+- 🔴 红色 - 错误消息
+- 🟡 黄色 - 警告消息
+- 🔵 蓝色 - 信息提示
+- 🟣 青色 - 标签名、分支名高亮
 
 ## 📄 开源协议
 

@@ -26,6 +26,7 @@ describe('config', () => {
       tagFormat: 'v_{datetime}_{suffix}',
       datetimeFormat: 'yyyyMMddHHmm',
       suffixes: ['test', 'main'],
+      mainBranches: ['main', 'master', 'develop'],
     });
   });
 
@@ -56,13 +57,13 @@ describe('config', () => {
     const mockReadFile = vi.fn().mockResolvedValue(JSON.stringify({ suffixes: [] }));
     fs.readFile = mockReadFile;
 
-    await expect(loadConfig()).rejects.toThrow('suffixes must be a non-empty array');
+    await expect(loadConfig()).rejects.toThrow('suffixes 必须是非空数组');
   });
 
   it('should reject tagFormat without {suffix} placeholder', async () => {
     const mockReadFile = vi.fn().mockResolvedValue(JSON.stringify({ tagFormat: 'invalid' }));
     fs.readFile = mockReadFile;
 
-    await expect(loadConfig()).rejects.toThrow('tagFormat must include {suffix} placeholder');
+    await expect(loadConfig()).rejects.toThrow('tagFormat 必须包含 {suffix} 占位符');
   });
 });
